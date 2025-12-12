@@ -34,7 +34,7 @@ jobs:
         # Define the input parameters for the Cloudflare action
         with:
           # Your Cloudflare Account ID (Stored securely as a GitHub Secret)
-          accountId: 893915d760f663fc4ddea20e519ddf8f
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           
           # The API Token for authentication (Stored securely as a GitHub Secret)
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
