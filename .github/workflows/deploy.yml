@@ -1,0 +1,51 @@
+# deploy.yml
+
+# 1. Name the workflow (This is what you see in the 'Actions' tab on GitHub)
+name: Deploy to Cloudflare Pages
+
+# 2. Define the trigger event
+on:
+  # The workflow runs whenever a push is made to the 'main' branch
+  push:
+    branches:
+      - main
+  # This allows you to manually trigger the workflow from the GitHub UI
+  workflow_dispatch:
+
+# 3. Define the job(s)
+jobs:
+  deploy:
+    # Specify the type of runner (virtual machine) to run the job on
+    runs-on: ubuntu-latest
+    
+    # Define the sequence of steps for the job
+    steps:
+      
+      # Step A: Checkout your code
+      - name: Checkout code
+        # Uses the standard action to fetch your repository content
+        uses: actions/checkout@v4
+
+      # Step B: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages
+        # Uses the official Cloudflare action to handle deployment logic
+        uses: cloudflare/pages-action@v1
+        
+        # Define the input parameters for the Cloudflare action
+        with:
+          # Your Cloudflare Account ID (Stored securely as a GitHub Secret)
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }} 
+          
+          # The API Token for authentication (Stored securely as a GitHub Secret)
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          
+          # The name of the project you created in your Cloudflare Pages dashboard
+          projectName: flight-booking-app 
+          
+          # The local folder containing your finished static website files
+          # Since your index.html is in the root, we use './'
+          directory: ./ 
+          
+          # The command to run before deployment (e.g., 'npm run build'). 
+          # Since your site is simple HTML, we leave this commented out.
+          # command: npm run build
